@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smul Spens — Price List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF5E8;
+    --olive:#7C8A3E;
+    --olive-dark:#5C6830;
+    --coral:#E8927C;
+    --coral-deep:#DE7C61;
+    --plum:#4A2E28;
+    --gold:#BF9A2E;
+    --paper:#FFFDF8;
+    --line:#E4D9C2;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(90deg, rgba(124,138,62,0.10) 0 44px, rgba(0,0,0,0) 44px 88px),
+      repeating-linear-gradient(0deg, rgba(232,146,124,0.10) 0 44px, rgba(0,0,0,0) 44px 88px),
+      var(--cream);
+    font-family:'Nunito Sans', sans-serif;
+    color:var(--plum);
+    display:flex;
+    justify-content:center;
+    padding:28px 12px;
+  }
+
+  .sheet{
+    width:100%;
+    max-width:640px;
+    background:var(--paper);
+    border-radius:26px;
+    border:3px solid var(--plum);
+    box-shadow:0 18px 0 -6px rgba(74,46,40,0.08), 0 24px 40px rgba(74,46,40,0.18);
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* HEADER */
+  .header{
+    background:var(--olive);
+    padding:28px 24px 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .header::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;bottom:-1px;
+    height:26px;
+    background:
+      radial-gradient(circle at 12px 0, transparent 13px, var(--olive) 13.5px) repeat-x;
+    background-size:26px 26px;
+    transform:rotate(180deg);
+  }
+  .header-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    gap:14px;
+  }
+  .header-text{
+    text-align:center;
+    min-width:0;
+  }
+  .eyebrow{
+    font-family:'Nunito Sans',sans-serif;
+    font-weight:800;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--cream);
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  .brand{
+    font-family:'Caveat', cursive;
+    font-size:clamp(38px, 11vw, 64px);
+    line-height:1;
+    color:#FFFDF8;
+    margin:0;
+    text-shadow:2px 3px 0 rgba(0,0,0,0.12);
+  }
+  .brand-sub{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    font-size:13px;
+    color:var(--cream);
+    margin-top:4px;
+  }
+  .stamp{
+    flex:none;
+    width:64px; height:64px;
+    margin-top:2px;
+    border-radius:50%;
+    border:2px dashed rgba(255,253,248,0.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:rotate(9deg);
+  }
+  .stamp span{
+    font-family:'Fraunces',serif;
+    font-size:8.5px;
+    font-weight:700;
+    color:var(--cream);
+    text-align:center;
+    line-height:1.25;
+  }
+
+  .title-strip{
+    text-align:center;
+    margin-top:18px;
+  }
+  .title-strip h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:30px;
+    letter-spacing:0.5px;
+    margin:0;
+    color:var(--plum);
+  }
+  .title-strip p{
+    font-size:13px;
+    color:#8a7364;
+    margin:6px 0 0;
+    font-style:italic;
+  }
+
+  /* BODY */
+  .body{ padding:6px 26px 8px; }
+
+  .category{ margin-top:30px; }
+  .cat-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:4px;
+  }
+  .cat-icon{
+    width:34px;height:34px;
+    flex:none;
+    border-radius:50%;
+    background:var(--coral);
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;
+  }
+  .cat-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:19px;
+    letter-spacing:.3px;
+    margin:0;
+    color:var(--olive-dark);
+  }
+  .cat-rule{
+    border:none;
+    height:2px;
+    background:repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 11px);
+    margin:8px 0 12px;
+  }
+
+  .item{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px dotted var(--line);
+  }
+  .item:last-child{ border-bottom:none; }
+  .item-name{
+    font-weight:700;
+    font-size:15.5px;
+    color:var(--plum);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .item-tagline{
+    display:block;
+    font-weight:400;
+    font-size:12.5px;
+    font-style:italic;
+    color:#8a7364;
+    margin-top:1px;
+  }
+  .item-price{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:17px;
+    color:var(--coral-deep);
+    white-space:nowrap;
+  }
+  .badge{
+    font-family:'Nunito Sans',sans-serif;
+    font-size:9.5px;
+    font-weight:800;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    padding:2.5px 7px;
+    border-radius:20px;
+    color:#fff;
+  }
+  .badge.fave{ background:var(--gold); }
+  .badge.limited{ background:var(--olive); }
+  .badge.new{ background:var(--coral-deep); }
+
+  /* BUNDLE BOX */
+  .bundle{
+    margin:32px 0 8px;
+    background:linear-gradient(135deg, var(--olive) 0%, var(--olive-dark) 100%);
+    border-radius:18px;
+    padding:20px 22px;
+    color:var(--cream);
+    position:relative;
+    overflow:hidden;
+  }
+  .bundle::before{
+    content:"BEST VALUE";
+    position:absolute;
+    top:14px; right:-34px;
+    background:var(--coral-deep);
+    color:#fff;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    padding:4px 40px;
+    transform:rotate(35deg);
+    box-shadow:0 2px 4px rgba(0,0,0,0.2);
+  }
+  .bundle h3{
+    font-family:'Fraunces', serif;
+    font-size:20px;
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  .bundle p{
+    font-size:13px;
+    line-height:1.5;
+    margin:0 0 12px;
+    color:#EFE9D6;
+    max-width:78%;
+  }
+  .bundle-price{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  .bundle-price .was{
+    font-size:14px;
+    text-decoration:line-through;
+    opacity:.65;
+  }
+  .bundle-price .now{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:700;
+    color:#FFF3D6;
+  }
+
+  /* TRUST STRIP */
+  .trust{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    margin:28px 0 4px;
+    text-align:center;
+  }
+  .trust div{ flex:1; }
+  .trust .ic{ font-size:20px; }
+  .trust p{
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--olive-dark);
+    margin:4px 0 0;
+    line-height:1.3;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+  }
+
+  /* FOOTER / CTA */
+  .footer{
+    margin-top:26px;
+    background:var(--coral);
+    padding:28px 26px 30px;
+    text-align:center;
+    position:relative;
+  }
+  .footer::before{
+    content:"";
+    position:absolute;
+    left:0;right:0;top:-1px;
+    height:26px;
+    background:
+      radial-gradient(circle at 12px 26px, transparent 13px, var(--coral) 13.5px) repeat-x;
+    background-size:26px 26px;
+  }
+  .footer .cta{
+    font-family:'Caveat', cursive;
+    font-size:38px;
+    color:#fff;
+    margin:0 0 4px;
+    text-shadow:1px 2px 0 rgba(0,0,0,0.12);
+  }
+  .footer .note{
+    font-size:11.5px;
+    color:#5C2E22;
+    font-weight:700;
+    margin:0 0 16px;
+    letter-spacing:.3px;
+  }
+  .wa-row{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .wa-btn{
+    background:var(--plum);
+    color:#FBF5E8;
+    font-weight:700;
+    font-size:13px;
+    padding:10px 16px;
+    border-radius:30px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    box-shadow:0 3px 0 rgba(0,0,0,0.15);
+  }
+  .wa-btn .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:#3FB950;
+  }
+  .footer .fine{
+    font-size:9.5px;
+    color:#5C2E22;
+    opacity:.75;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    font-weight:700;
+    margin-top:6px;
+  }
+  .cash-card{
+    display:inline-block;
+    font-size:11px;
+    font-weight:800;
+    background:#fff;
+    color:var(--plum);
+    padding:5px 14px;
+    border-radius:20px;
+    letter-spacing:.4px;
+    margin-bottom:14px;
+  }
+
+  /* LANDING / LANGUAGE SELECT */
+  .landing{
+    padding:70px 30px 60px;
+    text-align:center;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(232,146,124,0.18), transparent 60%),
+      var(--cream);
+  }
+  .landing-icon{
+    font-size:44px;
+    margin-bottom:6px;
+  }
+  .landing-brand{
+    font-family:'Caveat', cursive;
+    font-size:clamp(44px, 13vw, 70px);
+    color:var(--olive-dark);
+    margin:0;
+    line-height:1;
+  }
+  .landing-sub{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    font-size:12px;
+    color:#8a7364;
+    margin:6px 0 34px;
+  }
+  .landing-prompt{
+    font-size:13px;
+    color:#8a7364;
+    font-style:italic;
+    margin-bottom:18px;
+  }
+  .landing-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    max-width:280px;
+    margin:0 auto;
+  }
+  .lang-btn{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+    letter-spacing:.3px;
+    padding:15px 20px;
+    border-radius:14px;
+    border:2px solid var(--plum);
+    background:var(--paper);
+    color:var(--plum);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .lang-btn:hover{ background:var(--coral); color:#fff; border-color:var(--coral); }
+  .lang-btn .flag{ font-size:19px; }
+  .lang-btn.primary{
+    background:var(--olive);
+    color:#fff;
+    border-color:var(--olive);
+  }
+  .lang-btn.primary:hover{ background:var(--olive-dark); border-color:var(--olive-dark); }
+
+  #menu{ display:none; }
+  .lang-toggle{
+    position:absolute;
+    top:12px; left:12px;
+    z-index:5;
+    background:rgba(255,253,248,0.9);
+    color:var(--plum);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.3px;
+    padding:5px 10px;
+    border-radius:20px;
+    border:none;
+    cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div id="landing" class="landing">
+    <div class="landing-icon">🫙</div>
+    <h1 class="landing-brand">Smul Spens</h1>
+    <div class="landing-sub">Confectionery &amp; Preserves</div>
+    <p class="landing-prompt">Choose your language&nbsp;/&nbsp;Kies jou taal</p>
+    <div class="landing-buttons">
+      <button class="lang-btn primary" onclick="setLang('en')"><span>English</span><span class="flag">🇬🇧</span></button>
+      <button class="lang-btn" onclick="setLang('af')"><span>Afrikaans</span><span class="flag">🇿🇦</span></button>
+    </div>
+  </div>
+
+  <div id="menu">
+  <button class="lang-toggle" onclick="showLanding()">⟵ EN / AF</button>
+
+  <div class="header">
+    <div class="header-top">
+      <div class="header-text">
+        <div class="eyebrow" data-en="Homemade &amp; Handcrafted" data-af="Huisgemaak met Liefde">Homemade &amp; Handcrafted</div>
+        <h1 class="brand">Smul Spens</h1>
+        <div class="brand-sub" data-en="Confectionery &amp; Preserves" data-af="Lekkernye &amp; Inmaakprodukte">Confectionery &amp; Preserves</div>
+      </div>
+      <div class="stamp"><span data-en-html="FROM OUR<br>PANTRY<br>TO YOURS" data-af-html="VANAF ONS<br>SPENS NA<br>JOUNE">FROM OUR<br>PANTRY<br>TO YOURS</span></div>
+    </div>
+  </div>
+
+  <div class="title-strip">
+    <h1 data-en="The Price List" data-af="Die Pryslys">The Price List</h1>
+    <p data-en="Small batches, honest ingredients, made with love." data-af="Klein bondels, eerlike bestanddele, met liefde gemaak.">Small batches, honest ingredients, made with love.</p>
+  </div>
+
+  <div class="body">
+
+    <div class="category">
+      <div class="cat-head">
+        <div class="cat-icon">🫙</div>
+        <h2 data-en="Pickled Products &amp; Spreads" data-af="Ingelegde Produkte &amp; Smere">Pickled Products &amp; Spreads</h2>
+      </div>
+      <hr class="cat-rule">
+      <div class="item">
+        <div class="item-name" data-en="Pickled Beetroot" data-af="Ingelegde Beet">Pickled Beetroot</div>
+        <div class="item-price">R30</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Curried Beans" data-af="Kerrie Boontjies">Curried Beans</div>
+        <div class="item-price">R40</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Curried Cabbage" data-af="Kerrie Kool">Curried Cabbage</div>
+        <div class="item-price">R30</div>
+      </div>
+      <div class="item">
+        <div class="item-name"><span data-en="Pickled Onions" data-af="Ingelegde Uie">Pickled Onions</span> <span class="badge fave" data-en="Fan Favourite" data-af="Gunsteling">Fan Favourite</span></div>
+        <div class="item-price">R60</div>
+      </div>
+      <div class="item">
+        <div class="item-name"><span data-en="Homemade Mustard" data-af="Tuisgemaakte Mosterd">Homemade Mustard</span> <span class="badge limited" data-en="Limited Batch" data-af="Beperkte Bondel">Limited Batch</span></div>
+        <div class="item-price">R60</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Tomato Jam" data-af="Tamatiekonfyt">Tomato Jam</div>
+        <div class="item-price">R50</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="cat-head">
+        <div class="cat-icon">🍞</div>
+        <h2 data-en="Rusks" data-af="Beskuit">Rusks</h2>
+      </div>
+      <hr class="cat-rule">
+      <div class="item">
+        <div class="item-name" data-en="All Bran Rusks" data-af="All Bran Beskuit">All Bran Rusks</div>
+        <div class="item-price">R55</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Bran Rusks with Seeds" data-af="Semelbeskuit met Sade">Bran Rusks with Seeds</div>
+        <div class="item-price">R55</div>
+      </div>
+      <div class="item">
+        <div class="item-name"><span data-en="Buttermilk Rusks" data-af="Karringmelkbeskuit">Buttermilk Rusks</span> <span class="badge fave" data-en="Fan Favourite" data-af="Gunsteling">Fan Favourite</span></div>
+        <div class="item-price">R55</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Diabetic Rusks" data-af="Diabetiese Beskuit">Diabetic Rusks</div>
+        <div class="item-price">R55</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="cat-head">
+        <div class="cat-icon">🍪</div>
+        <h2 data-en="Baked Goods &amp; Biscuits" data-af="Gebak &amp; Koekies">Baked Goods &amp; Biscuits</h2>
+      </div>
+      <hr class="cat-rule">
+      <div class="item">
+        <div class="item-name" data-en="Ginger Biscuits" data-af="Gemmerkoekies">Ginger Biscuits</div>
+        <div class="item-price">R35</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Sweet Biscuits" data-af="Soet Koekies">Sweet Biscuits</div>
+        <div class="item-price">R35</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Cupcakes" data-af="Kolwyntjies">Cupcakes</div>
+        <div class="item-price" data-en="R10 each" data-af="R10 elk">R10 each</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="cat-head">
+        <div class="cat-icon">🍬</div>
+        <h2 data-en="Sweet Treats" data-af="Soet Lekkernye">Sweet Treats</h2>
+      </div>
+      <hr class="cat-rule">
+      <div class="item">
+        <div class="item-name" data-en="Biscuit Fudge" data-af="Koekie Fudge">Biscuit Fudge</div>
+        <div class="item-price">R20</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Date Balls" data-af="Dadelballetjies">Date Balls</div>
+        <div class="item-price">R20</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Coconut Ice" data-af="Klapper-ys">Coconut Ice</div>
+        <div class="item-price">R20</div>
+      </div>
+      <div class="item">
+        <div class="item-name" data-en="Lamingtons" data-af="Lamingtons">Lamingtons</div>
+        <div class="item-price">R20</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p class="cta" data-en="Waiting for you!" data-af="Ons wag vir jou!">Waiting for you!</p>
+    <span class="cash-card" data-en="💳 CASH &amp; CARD ACCEPTED" data-af="💳 KONTANT &amp; KAART AANVAAR">💳 CASH &amp; CARD ACCEPTED</span>
+    <p class="note" data-en="Order on WhatsApp" data-af="Bestel op WhatsApp">Order on WhatsApp</p>
+    <div class="wa-row">
+      <div class="wa-btn"><span class="dot"></span> Ronel — 079 955 0825</div>
+      <div class="wa-btn"><span class="dot"></span> Dalene — 083 508 1982</div>
+    </div>
+    <p class="fine" data-en="Prices subject to change without notice" data-af="Pryse onderhewig aan verandering sonder kennisgewing">Prices subject to change without notice</p>
+  </div>
+
+  </div>
+
+</div>
+
+<script>
+  function setLang(lang){
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      var val = lang === 'af' ? el.getAttribute('data-af') : el.getAttribute('data-en');
+      el.textContent = val;
+    });
+    document.querySelectorAll('[data-en-html]').forEach(function(el){
+      var val = lang === 'af' ? el.getAttribute('data-af-html') : el.getAttribute('data-en-html');
+      el.innerHTML = val;
+    });
+    document.documentElement.lang = lang;
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+  }
+  function showLanding(){
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('landing').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
