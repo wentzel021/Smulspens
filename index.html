@@ -236,12 +236,14 @@
 
   /* FLOATING TOTAL BAR */
   .total-bar{
+    display:none;
     position:fixed; left:0; right:0; bottom:0; z-index:80;
     background:var(--warm-brown); color:var(--cream);
     padding:12px 20px calc(12px + env(safe-area-inset-bottom));
-    display:flex; align-items:center; justify-content:center;
+    align-items:center; justify-content:center;
     box-shadow:0 -6px 18px rgba(0,0,0,0.18);
   }
+  .total-bar.visible{ display:flex; }
   .total-bar-inner{
     width:100%; max-width:640px; display:flex; align-items:center; justify-content:space-between;
   }
@@ -250,14 +252,16 @@
 
   /* FLOATING WHATSAPP FAB */
   .fab-wa{
+    display:none;
     position:fixed; right:20px; bottom:78px; z-index:90;
     width:56px; height:56px; border-radius:50%;
     background:var(--wa-green);
-    display:flex; align-items:center; justify-content:center;
+    align-items:center; justify-content:center;
     box-shadow:0 6px 16px rgba(0,0,0,0.28);
     text-decoration:none;
     transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
   }
+  .fab-wa.visible{ display:flex; }
   .fab-wa:hover{ background:var(--wa-green-dark); transform:translateY(-2px); box-shadow:0 9px 20px rgba(0,0,0,0.3); }
   .fab-wa:active{ transform:translateY(0) scale(0.95); }
   .fab-wa svg{ width:29px; height:29px; }
@@ -669,6 +673,8 @@
       menu.classList.add('visible');
       setActiveTab('pickles');
       updateActiveTabFromScroll();
+      document.querySelector('.total-bar').classList.add('visible');
+      document.getElementById('fabWa').classList.add('visible');
     }, 250);
   }
 
@@ -676,6 +682,8 @@
     var landing = document.getElementById('landing');
     var menu = document.getElementById('menu');
     menu.classList.remove('visible');
+    document.querySelector('.total-bar').classList.remove('visible');
+    document.getElementById('fabWa').classList.remove('visible');
     setTimeout(function(){
       menu.style.display = 'none';
       landing.style.display = 'block';
