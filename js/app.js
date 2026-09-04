@@ -2,6 +2,7 @@ let ITEMS = [];
 let qty = {};
 let currentLang = 'en';
 let tabsOriginalTop = null;
+const API_URL = process.env.API_URL || 'http://localhost:3000/api';
 
 // Load products from JSON
 async function loadProducts() {
@@ -12,7 +13,6 @@ async function loadProducts() {
     console.log('✓ Products loaded successfully');
   } catch (error) {
     console.error('✗ Error loading products:', error);
-    // Fallback - use inline data if JSON fails
     loadFallbackProducts();
   }
 }
@@ -60,6 +60,61 @@ function updateTotals(){
   ITEMS.forEach(i => { total += (qty[i.id]||0) * i.price; });
   document.getElementById('totalAmount').textContent = 'R' + total.toFixed(2);
   updateWaLinks();
+}
+
+function getOrderItems() {
+  return ITEMS
+    .filter(i => qty[i.id] > 0)
+    .map(i => ({
+      id: i.id,
+      name: currentLang === 'af' ? i.af : i.en,
+      quantity: qty[i.id],
+      price: i.price
+    }));
+}
+
+function getOrderTotal() {
+  let total = 0;
+  ITEMS.forEach(i => { total += (qty[i.id]||0) * i.price; });
+  return total;
+}
+
+async function submitOrderToBackend() {
+  const items = getOrderItems();
+  const total = getOrderTotal();
+
+  if (items.length === 0) {
+    alert(currentLang === 'af' ? 'Voeg items by!' : 'Add items to order!');
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items,
+        total,
+        language: currentLang,
+        customerEmail: prompt(currentLang === 'af' ? 'Jou e-pos (opsioneel):' : 'Your email (optional):') || null,
+        customerPhone: prompt(currentLang === 'af' ? 'Jou foonummer (opsioneel):' : 'Your phone (optional):') || null
+      })
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      alert(result.message);
+      // Reset order
+      ITEMS.forEach(i => { qty[i.id] = 0; });
+      document.querySelectorAll('.qty-input').forEach(el => { el.value = 0; });
+      updateTotals();
+    } else {
+      alert('Error: ' + result.error);
+    }
+  } catch (error) {
+    console.error('Order submission error:', error);
+    alert(currentLang === 'af' ? 'Fout by bestelling' : 'Error submitting order');
+  }
 }
 
 function buildMessage(){
