@@ -1,18 +1,29 @@
-[
-  {"id":"beetroot", "cat":"pickles", "en":"Pickled Beetroot", "af":"Ingelegde Beet", "price":30},
-  {"id":"curriedbeans", "cat":"pickles", "en":"Curried Beans", "af":"Kerrie Boontjies", "price":40},
-  {"id":"curriedcabbage", "cat":"pickles", "en":"Curried Cabbage", "af":"Kerrie Kool", "price":30},
-  {"id":"onions", "cat":"pickles", "en":"Pickled Onions", "af":"Ingelegde Uie", "price":60},
-  {"id":"mustard", "cat":"pickles", "en":"Homemade Mustard", "af":"Tuisgemaakte Mosterd", "price":60},
-  {"id":"tomatojam", "cat":"pickles", "en":"Tomato Jam", "af":"Tamatiekonfyt", "price":50},
-  {"id":"allbran", "cat":"rusks", "en":"All Bran Rusks", "af":"All Bran Beskuit", "price":55},
-  {"id":"branseeds", "cat":"rusks", "en":"Bran Rusks with Seeds", "af":"Semelbeskuit met Sade", "price":55},
-  {"id":"buttermilk", "cat":"rusks", "en":"Buttermilk Rusks", "af":"Karringmelkbeskuit", "price":55},
-  {"id":"diabetic", "cat":"rusks", "en":"Diabetic Rusks", "af":"Diabetiese Beskuit", "price":55},
-  {"id":"ginger", "cat":"baked", "en":"Ginger Biscuits", "af":"Gemmerkoekies", "price":35},
-  {"id":"sweetbiscuits", "cat":"baked", "en":"Sweet Biscuits", "af":"Soet Koekies", "price":35},
-  {"id":"cupcakes", "cat":"baked", "en":"Cupcakes", "af":"Kolwyntjies", "price":10},
-  {"id":"fudge", "cat":"sweets", "en":"Biscuit Fudge", "af":"Koekie Fudge", "price":20},
-  {"id":"coconutice", "cat":"sweets", "en":"Coconut Ice", "af":"Klapper-ys", "price":20},
-  {"id":"lamingtons", "cat":"sweets", "en":"Lamingtons", "af":"Ystervarkies", "price":20}
-]
+{
+  "categories": [
+    { "id": "pickles", "icon": "🫙", "en": "Pickled Products & Spreads", "af": "Ingelegde Produkte & Smere", "tabEn": "Spreads", "tabAf": "Smere" },
+    { "id": "rusks", "icon": "🍞", "en": "Rusks", "af": "Beskuit", "tabEn": "Rusks", "tabAf": "Beskuit" },
+    { "id": "baked", "icon": "🍪", "en": "Baked Goods & Biscuits", "af": "Gebak & Koekies", "tabEn": "Baked Goods", "tabAf": "Gebak" },
+    { "id": "sweets", "icon": "🍬", "en": "Sweet Treats", "af": "Soet Lekkernye", "tabEn": "Sweets", "tabAf": "Lekkers" }
+  ],
+  "products": [
+    { "id": "beetroot", "cat": "pickles", "en": "Pickled Beetroot", "af": "Ingelegde Beet", "price": 30 },
+    { "id": "curriedbeans", "cat": "pickles", "en": "Curried Beans", "af": "Kerrie Boontjies", "price": 40 },
+    { "id": "curriedcabbage", "cat": "pickles", "en": "Curried Cabbage", "af": "Kerrie Kool", "price": 30 },
+    { "id": "onions", "cat": "pickles", "en": "Pickled Onions", "af": "Ingelegde Uie", "price": 60 },
+    { "id": "mustard", "cat": "pickles", "en": "Homemade Mustard", "af": "Tuisgemaakte Mosterd", "price": 60 },
+    { "id": "tomatojam", "cat": "pickles", "en": "Tomato Jam", "af": "Tamatiekonfyt", "price": 50 },
+
+    { "id": "allbran", "cat": "rusks", "en": "All Bran Rusks", "af": "All Bran Beskuit", "price": 55 },
+    { "id": "branseeds", "cat": "rusks", "en": "Bran Rusks with Seeds", "af": "Semelbeskuit met Sade", "price": 55 },
+    { "id": "buttermilk", "cat": "rusks", "en": "Buttermilk Rusks", "af": "Karringmelkbeskuit", "price": 55 },
+    { "id": "diabetic", "cat": "rusks", "en": "Diabetic Rusks", "af": "Diabetiese Beskuit", "price": 55 },
+
+    { "id": "ginger", "cat": "baked", "en": "Ginger Biscuits", "af": "Gemmerkoekies", "price": 35 },
+    { "id": "sweetbiscuits", "cat": "baked", "en": "Sweet Biscuits", "af": "Soet Koekies", "price": 35 },
+    { "id": "cupcakes", "cat": "baked", "en": "Cupcakes", "af": "Kolwyntjies", "price": 10, "unitEn": "per cupcake", "unitAf": "per kolwyntjie" },
+
+    { "id": "fudge", "cat": "sweets", "en": "Biscuit Fudge", "af": "Koekie Fudge", "price": 20 },
+    { "id": "coconutice", "cat": "sweets", "en": "Coconut Ice", "af": "Klapper-ys", "price": 20 },
+    { "id": "lamingtons", "cat": "sweets", "en": "Lamingtons", "af": "Ystervarkies", "price": 20 }
+  ]
+}
