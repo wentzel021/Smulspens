@@ -21,6 +21,7 @@ class Database {
           language TEXT DEFAULT 'en',
           customerEmail TEXT,
           customerPhone TEXT,
+          paymentIntentId TEXT,
           status TEXT DEFAULT 'pending',
           createdAt TEXT,
           updatedAt TEXT
@@ -33,8 +34,8 @@ class Database {
   saveOrder(order) {
     const id = 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
     const stmt = this.db.prepare(`
-      INSERT INTO orders (id, items, total, language, customerEmail, customerPhone, status, createdAt, updatedAt)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO orders (id, items, total, language, customerEmail, customerPhone, paymentIntentId, status, createdAt, updatedAt)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     stmt.run(
       id,
@@ -43,6 +44,7 @@ class Database {
       order.language || 'en',
       order.customerEmail || null,
       order.customerPhone || null,
+      order.paymentIntentId || null,
       order.status || 'pending',
       order.createdAt,
       order.createdAt

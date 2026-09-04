@@ -17,7 +17,7 @@ class EmailService {
 
   async sendOrderConfirmation(data) {
     try {
-      const { email, orderId, items, total, language } = data;
+      const { email, orderId, items, total, language, paid } = data;
       const isAfrikaans = language === 'af';
 
       const subject = isAfrikaans ? 'Bestelling bevestigd!' : 'Order Confirmed!';
@@ -25,7 +25,8 @@ class EmailService {
         orderId,
         items,
         total,
-        isAfrikaans
+        isAfrikaans,
+        paid
       });
 
       await this.transporter.sendMail({
@@ -43,7 +44,7 @@ class EmailService {
 
   async sendOrderNotification(data) {
     try {
-      const { orderId, items, total, customerEmail, customerPhone, language } = data;
+      const { orderId, items, total, customerEmail, customerPhone, language, paid, paymentIntentId } = data;
       const isAfrikaans = language === 'af';
 
       const subject = isAfrikaans ? `Nuwe Bestelling: ${orderId}` : `New Order: ${orderId}`;
@@ -53,7 +54,9 @@ class EmailService {
         total,
         customerEmail,
         customerPhone,
-        isAfrikaans
+        isAfrikaans,
+        paid,
+        paymentIntentId
       });
 
       const recipients = [
@@ -77,16 +80,21 @@ class EmailService {
   }
 
   getConfirmationTemplate(data) {
-    const { orderId, items, total, isAfrikaans } = data;
+    const { orderId, items, total, isAfrikaans, paid } = data;
     const itemsHtml = items
       .map(i => `<li>${i.quantity}x ${i.name} - R${(i.price * i.quantity).toFixed(2)}</li>`)
       .join('');
+
+    const paymentStatus = paid 
+      ? isAfrikaans ? '✓ BETAALD' : '✓ PAID'
+      : isAfrikaans ? '⏳ HANGENDE' : '⏳ PENDING';
 
     return `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2>${isAfrikaans ? 'Bestelling Bevestigd!' : 'Order Confirmed!'}</h2>
         <p>${isAfrikaans ? 'Bedankt vir jou bestelling!' : 'Thank you for your order!'}</p>
         <p><strong>${isAfrikaans ? 'Bestellingnommer:' : 'Order Number:'}</strong> ${orderId}</p>
+        <p><strong>${isAfrikaans ? 'Status:' : 'Status:'}</strong> ${paymentStatus}</p>
         <h3>${isAfrikaans ? 'Jou Bestelstukke:' : 'Your Items:'}</h3>
         <ul>${itemsHtml}</ul>
         <p><strong>${isAfrikaans ? 'Totaal:' : 'Total:'}</strong> R${total.toFixed(2)}</p>
@@ -97,10 +105,15 @@ class EmailService {
   }
 
   getNotificationTemplate(data) {
-    const { orderId, items, total, customerEmail, customerPhone, isAfrikaans } = data;
+    const { orderId, items, total, customerEmail, customerPhone, isAfrikaans, paid, paymentIntentId } = data;
     const itemsHtml = items
       .map(i => `<li>${i.quantity}x ${i.name} - R${(i.price * i.quantity).toFixed(2)}</li>`)
       .join('');
+
+    const paymentInfo = paid
+      ? `<p><strong>${isAfrikaans ? 'Betaalstatus:' : 'Payment Status:'}</strong> ✓ ${isAfrikaans ? 'BETAALD' : 'PAID'}</p>
+         <p><strong>${isAfrikaans ? 'Betaling ID:' : 'Payment ID:'}</strong> ${paymentIntentId}</p>`
+      : `<p><strong>${isAfrikaans ? 'Betaalstatus:' : 'Payment Status:'}</strong> ⏳ ${isAfrikaans ? 'HANGENDE' : 'PENDING'}</p>`;
 
     return `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -108,6 +121,7 @@ class EmailService {
         <p><strong>${isAfrikaans ? 'Bestellingnommer:' : 'Order Number:'}</strong> ${orderId}</p>
         <p><strong>${isAfrikaans ? 'Klant E-pos:' : 'Customer Email:'}</strong> ${customerEmail || 'N/A'}</p>
         <p><strong>${isAfrikaans ? 'Klant Foon:' : 'Customer Phone:'}</strong> ${customerPhone || 'N/A'}</p>
+        ${paymentInfo}
         <h3>${isAfrikaans ? 'Bestelstukke:' : 'Items:'}</h3>
         <ul>${itemsHtml}</ul>
         <p><strong>${isAfrikaans ? 'Totaal:' : 'Total:'}</strong> R${total.toFixed(2)}</p>

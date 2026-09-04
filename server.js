@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const Database = require('./utils/database');
 const emailService = require('./utils/emailService');
+const paymentsRouter = require('./routes/payments');
 
 dotenv.config();
 
@@ -93,6 +94,9 @@ app.get('/api/orders', (req, res) => {
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 });
+
+// Payment routes
+app.use('/api/payments', paymentsRouter);
 
 app.listen(PORT, () => {
   console.log(`✓ Smul Spens server running on http://localhost:${PORT}`);

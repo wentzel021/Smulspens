@@ -7,7 +7,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": ["confectionery", "e-commerce"],
+  "keywords": ["confectionery", "e-commerce", "stripe"],
   "author": "wentzel021",
   "license": "MIT",
   "dependencies": {
@@ -16,7 +16,8 @@
     "dotenv": "^16.0.3",
     "nodemailer": "^6.9.1",
     "sqlite3": "^5.1.6",
-    "body-parser": "^1.20.2"
+    "body-parser": "^1.20.2",
+    "stripe": "^12.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
