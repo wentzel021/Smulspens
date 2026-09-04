@@ -87,17 +87,26 @@
   .title-strip h1{ font-family:'Fraunces', serif; font-weight:600; font-size:30px; letter-spacing:0.5px; margin:0; color:var(--warm-brown); }
   .title-strip p{ font-size:13px; color:#8a7364; margin:6px 0 0; font-style:italic; }
 
-  /* TABS (sticky scrollspy nav) */
+  /* TABS (floating scrollspy nav) */
+  #tabsPlaceholder{ display:none; }
   .tabs{
     display:flex;
     flex-wrap:wrap;
     gap:8px;
     padding:14px 20px;
-    position:sticky;
-    top:0;
-    z-index:20;
     background:var(--paper);
-    box-shadow:0 4px 10px rgba(92,58,46,0.08);
+    transition:box-shadow .15s ease;
+  }
+  .tabs.floating{
+    position:fixed;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(calc(100% - 24px), 596px);
+    z-index:30;
+    border-radius:16px;
+    box-shadow:0 10px 26px rgba(92,58,46,0.28);
+    padding:10px 12px;
   }
   .tab{
     flex:1 1 calc(50% - 4px);
@@ -128,7 +137,7 @@
 
   /* GRID */
   .panel-wrap{ padding:10px 20px 4px; }
-  .cat-panel{ scroll-margin-top:74px; padding-top:14px; }
+  .cat-panel{ scroll-margin-top:130px; padding-top:14px; }
   .cat-section-head{ display:flex; align-items:center; gap:9px; margin-bottom:4px; }
   .cat-section-icon{
     width:32px; height:32px; flex:none; border-radius:50%;
@@ -226,8 +235,8 @@
   .lang-btn.primary{ background:var(--olive); color:#fff; border-color:var(--olive); }
   .lang-btn.primary:hover{ background:var(--olive-dark); border-color:var(--olive-dark); }
 
-  #menu{ display:none; opacity:0; transform:translateY(14px); transition:opacity .45s ease, transform .45s ease; }
-  #menu.visible{ opacity:1; transform:translateY(0); }
+  #menu{ display:none; opacity:0; transition:opacity .45s ease; }
+  #menu.visible{ opacity:1; }
   #landing{ transition:opacity .3s ease; }
   .lang-toggle{
     position:absolute; top:12px; left:12px; z-index:5; background:rgba(255,253,248,0.9); color:var(--warm-brown);
@@ -301,7 +310,8 @@
     <p data-en="Small batches, honest ingredients, made with love." data-af="Klein bondels, eerlike bestanddele, met liefde gemaak.">Small batches, honest ingredients, made with love.</p>
   </div>
 
-  <div class="tabs">
+  <div id="tabsPlaceholder"></div>
+  <div class="tabs" id="tabsBar">
     <button class="tab active" data-cat="pickles" onclick="showCat('pickles')"><span class="tab-icon">🫙</span><span data-en="Spreads" data-af="Smere">Spreads</span></button>
     <button class="tab" data-cat="rusks" onclick="showCat('rusks')"><span class="tab-icon">🍞</span><span data-en="Rusks" data-af="Beskuit">Rusks</span></button>
     <button class="tab" data-cat="baked" onclick="showCat('baked')"><span class="tab-icon">🍪</span><span data-en="Baked Goods" data-af="Gebak">Baked Goods</span></button>
@@ -632,10 +642,37 @@
     setActiveTab(catId);
   }
 
+  var tabsOriginalTop = null;
+
+  function measureTabsOffset(){
+    var tabsEl = document.getElementById('tabsBar');
+    if(!tabsEl) return;
+    var wasFloating = tabsEl.classList.contains('floating');
+    if(wasFloating){ tabsEl.classList.remove('floating'); document.getElementById('tabsPlaceholder').style.display = 'none'; }
+    var rect = tabsEl.getBoundingClientRect();
+    tabsOriginalTop = rect.top + window.scrollY;
+    if(wasFloating){ tabsEl.classList.add('floating'); document.getElementById('tabsPlaceholder').style.display = 'block'; }
+  }
+
+  function updateTabsFloat(){
+    if(tabsOriginalTop === null) return;
+    var tabsEl = document.getElementById('tabsBar');
+    var placeholder = document.getElementById('tabsPlaceholder');
+    var shouldFloat = window.scrollY + 10 >= tabsOriginalTop;
+    if(shouldFloat && !tabsEl.classList.contains('floating')){
+      placeholder.style.height = tabsEl.offsetHeight + 'px';
+      placeholder.style.display = 'block';
+      tabsEl.classList.add('floating');
+    } else if(!shouldFloat && tabsEl.classList.contains('floating')){
+      tabsEl.classList.remove('floating');
+      placeholder.style.display = 'none';
+    }
+  }
+
   function updateActiveTabFromScroll(){
     var menu = document.getElementById('menu');
     if(!menu || menu.style.display === 'none') return;
-    var tabsEl = document.querySelector('.tabs');
+    var tabsEl = document.getElementById('tabsBar');
     if(!tabsEl) return;
     var offset = tabsEl.getBoundingClientRect().bottom + 12;
     var panels = document.querySelectorAll('.cat-panel');
@@ -647,8 +684,13 @@
     if(currentId){ setActiveTab(currentId.replace('cat-', '')); }
   }
 
-  window.addEventListener('scroll', updateActiveTabFromScroll, {passive:true});
-  window.addEventListener('resize', updateActiveTabFromScroll);
+  function onScroll(){
+    updateTabsFloat();
+    updateActiveTabFromScroll();
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', function(){ measureTabsOffset(); onScroll(); });
 
   function setLang(lang){
     currentLang = lang;
@@ -672,7 +714,8 @@
       void menu.offsetWidth;
       menu.classList.add('visible');
       setActiveTab('pickles');
-      updateActiveTabFromScroll();
+      measureTabsOffset();
+      onScroll();
       document.querySelector('.total-bar').classList.add('visible');
       document.getElementById('fabWa').classList.add('visible');
     }, 250);
