@@ -6,6 +6,7 @@ const path = require('path');
 const Database = require('./utils/database');
 const emailService = require('./utils/emailService');
 const paymentsRouter = require('./routes/payments');
+const adminRouter = require('./routes/admin');
 
 dotenv.config();
 
@@ -98,6 +99,15 @@ app.get('/api/orders', (req, res) => {
 // Payment routes
 app.use('/api/payments', paymentsRouter);
 
+// Admin routes
+app.use('/api/admin', adminRouter);
+
+// Serve admin dashboard
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/admin.html'));
+});
+
 app.listen(PORT, () => {
   console.log(`✓ Smul Spens server running on http://localhost:${PORT}`);
+  console.log(`✓ Admin dashboard: http://localhost:${PORT}/admin`);
 });

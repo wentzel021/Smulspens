@@ -13,6 +13,7 @@ class Database {
 
   init() {
     this.db.serialize(() => {
+      // Orders table
       this.db.run(`
         CREATE TABLE IF NOT EXISTS orders (
           id TEXT PRIMARY KEY,
@@ -27,7 +28,19 @@ class Database {
           updatedAt TEXT
         )
       `);
-      console.log('✓ Database initialized');
+      
+      // Inventory table
+      this.db.run(`
+        CREATE TABLE IF NOT EXISTS inventory (
+          itemId TEXT PRIMARY KEY,
+          itemName TEXT NOT NULL,
+          quantity INTEGER DEFAULT 0,
+          reorderLevel INTEGER DEFAULT 10,
+          lastUpdated TEXT
+        )
+      `);
+      
+      console.log('✓ Database initialized with inventory support');
     });
   }
 
@@ -84,6 +97,37 @@ class Database {
     const stmt = this.db.prepare('UPDATE orders SET status = ?, updatedAt = ? WHERE id = ?');
     stmt.run(status, new Date().toISOString(), id);
     stmt.finalize();
+  }
+
+  getInventory() {
+    return new Promise((resolve, reject) => {
+      this.db.all('SELECT * FROM inventory ORDER BY itemName', (err, rows) => {
+        if (err) reject(err);
+        resolve(rows || []);
+      });
+    });
+  }
+
+  updateInventory(itemId, quantity) {
+    const stmt = this.db.prepare('UPDATE inventory SET quantity = ?, lastUpdated = ? WHERE itemId = ?');
+    stmt.run(quantity, new Date().toISOString(), itemId);
+    stmt.finalize();
+  }
+
+  getDashboardStats() {
+    return new Promise((resolve, reject) => {
+      this.db.all(`
+        SELECT 
+          COUNT(*) as totalOrders,
+          SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END) as paidOrders,
+          SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pendingOrders,
+          SUM(total) as totalRevenue
+        FROM orders
+      `, (err, rows) => {
+        if (err) reject(err);
+        resolve(rows[0] || {});
+      });
+    });
   }
 
   close() {
