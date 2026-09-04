@@ -367,7 +367,9 @@ body{
   box-shadow:0 3px 0 rgba(0,0,0,0.15);
   text-decoration:none;
   cursor:pointer;
+  border:none;
   transition:transform .15s ease, box-shadow .15s ease;
+  font-family: inherit;
 }
 
 .wa-btn:hover{
@@ -555,34 +557,136 @@ body{
   color:#FFDCC4;
 }
 
-/* FLOATING WHATSAPP FAB */
-.fab-wa{
+/* MODALS */
+.modal{
   display:none;
   position:fixed;
-  right:20px;
-  bottom:78px;
-  z-index:90;
-  width:56px;
-  height:56px;
-  border-radius:50%;
+  z-index:100;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  animation:fadeIn 0.3s ease;
+}
+
+.modal.show{ display:flex; align-items:center; justify-content:center; }
+
+@keyframes fadeIn{ from{ opacity:0; } to{ opacity:1; } }
+
+.modal-content{
+  background:var(--paper);
+  padding:30px 24px;
+  border-radius:16px;
+  width:90%;
+  max-width:400px;
+  position:relative;
+  box-shadow:0 10px 40px rgba(0,0,0,0.3);
+}
+
+.modal-close{
+  position:absolute;
+  right:12px;
+  top:12px;
+  font-size:28px;
+  font-weight:bold;
+  cursor:pointer;
+  color:var(--warm-brown);
+}
+
+.modal-content h2{
+  font-family:'Fraunces', serif;
+  color:var(--warm-brown);
+  margin:0 0 20px;
+  font-size:22px;
+}
+
+.wa-contacts{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.wa-link{
   background:var(--wa-green);
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 6px 16px rgba(0,0,0,0.28);
+  color:#fff;
+  padding:12px 16px;
+  border-radius:10px;
   text-decoration:none;
-  transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:600;
+  transition:background .2s ease;
 }
 
-.fab-wa.visible{ display:flex; }
-
-.fab-wa:hover{
+.wa-link:hover{
   background:var(--wa-green-dark);
-  transform:translateY(-2px);
-  box-shadow:0 9px 20px rgba(0,0,0,0.3);
 }
 
-.fab-wa:active{
-  transform:translateY(0) scale(0.95);
+.wa-link .dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.8);
+  flex-shrink:0;
 }
 
-.fab-wa svg{ width:29px; height:29px; }
+/* STRIPE PAYMENT FORM */
+.form-group{
+  margin-bottom:16px;
+}
+
+.form-group label{
+  display:block;
+  font-weight:600;
+  font-size:13px;
+  margin-bottom:6px;
+  color:var(--warm-brown);
+}
+
+.form-group input{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  font-size:14px;
+  font-family:inherit;
+}
+
+.card-element{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:12px;
+  margin-bottom:16px;
+  background:#fff;
+}
+
+.card-errors{
+  color:var(--terracotta);
+  font-size:13px;
+  margin-bottom:16px;
+  min-height:20px;
+}
+
+.payment-btn{
+  width:100%;
+  padding:12px;
+  background:var(--terracotta);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+
+.payment-btn:hover{
+  background:var(--terracotta-dark);
+}
+
+.payment-btn:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}

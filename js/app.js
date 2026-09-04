@@ -2,7 +2,11 @@ let ITEMS = [];
 let qty = {};
 let currentLang = 'en';
 let tabsOriginalTop = null;
+let stripe = null;
+let elements = null;
+let cardElement = null;
 const API_URL = process.env.API_URL || 'http://localhost:3000/api';
+const STRIPE_KEY = 'pk_test_YOUR_STRIPE_KEY'; // Replace with your Stripe public key
 
 // Load products from JSON
 async function loadProducts() {
@@ -10,6 +14,7 @@ async function loadProducts() {
     const response = await fetch('products.json');
     ITEMS = await response.json();
     ITEMS.forEach(i => { qty[i.id] = 0; });
+    renderProducts();
     console.log('✓ Products loaded successfully');
   } catch (error) {
     console.error('✗ Error loading products:', error);
@@ -38,7 +43,42 @@ function loadFallbackProducts() {
     {id:'lamingtons', cat:'sweets', en:'Lamingtons', af:'Ystervarkies', price:20}
   ];
   ITEMS.forEach(i => { qty[i.id] = 0; });
+  renderProducts();
   console.log('⚠ Using fallback products');
+}
+
+function renderProducts() {
+  const panel = document.getElementById('productsPanel');
+  const categories = ['pickles', 'rusks', 'baked', 'sweets'];
+  const catIcons = {'pickles': '🫙', 'rusks': '🍞', 'baked': '🍪', 'sweets': '🍬'};
+  const catLabels = {
+    'pickles': {en: 'Pickled Products & Spreads', af: 'Ingelegde Produkte & Smere'},
+    'rusks': {en: 'Rusks', af: 'Beskuit'},
+    'baked': {en: 'Baked Goods & Biscuits', af: 'Gebak & Koekies'},
+    'sweets': {en: 'Sweet Treats', af: 'Soet Lekkernye'}
+  };
+
+  panel.innerHTML = categories.map(cat => `
+    <div class="cat-panel" id="cat-${cat}">
+      <div class="cat-section-head">
+        <div class="cat-section-icon">${catIcons[cat]}</div>
+        <h2>${currentLang === 'af' ? catLabels[cat].af : catLabels[cat].en}</h2>
+      </div>
+      <div class="item-grid">
+        ${ITEMS.filter(i => i.cat === cat).map(i => `
+          <div class="item-card">
+            <div class="item-name">${currentLang === 'af' ? i.af : i.en}</div>
+            <div class="item-price">R${i.price}</div>
+            <div class="qty-row">
+              <button class="qty-btn" onclick="stepQty('${i.id}',-1)" aria-label="Decrease">−</button>
+              <input class="qty-input" type="number" min="0" value="0" data-item="${i.id}" oninput="qtyChanged('${i.id}',this.value)" aria-label="Quantity">
+              <button class="qty-btn" onclick="stepQty('${i.id}',1)" aria-label="Increase">+</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
 }
 
 function stepQty(id, delta){
@@ -59,7 +99,6 @@ function updateTotals(){
   let total = 0;
   ITEMS.forEach(i => { total += (qty[i.id]||0) * i.price; });
   document.getElementById('totalAmount').textContent = 'R' + total.toFixed(2);
-  updateWaLinks();
 }
 
 function getOrderItems() {
@@ -79,45 +118,7 @@ function getOrderTotal() {
   return total;
 }
 
-async function submitOrderToBackend() {
-  const items = getOrderItems();
-  const total = getOrderTotal();
-
-  if (items.length === 0) {
-    alert(currentLang === 'af' ? 'Voeg items by!' : 'Add items to order!');
-    return;
-  }
-
-  try {
-    const response = await fetch(`${API_URL}/orders`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        items,
-        total,
-        language: currentLang,
-        customerEmail: prompt(currentLang === 'af' ? 'Jou e-pos (opsioneel):' : 'Your email (optional):') || null,
-        customerPhone: prompt(currentLang === 'af' ? 'Jou foonummer (opsioneel):' : 'Your phone (optional):') || null
-      })
-    });
-
-    const result = await response.json();
-    if (result.success) {
-      alert(result.message);
-      // Reset order
-      ITEMS.forEach(i => { qty[i.id] = 0; });
-      document.querySelectorAll('.qty-input').forEach(el => { el.value = 0; });
-      updateTotals();
-    } else {
-      alert('Error: ' + result.error);
-    }
-  } catch (error) {
-    console.error('Order submission error:', error);
-    alert(currentLang === 'af' ? 'Fout by bestelling' : 'Error submitting order');
-  }
-}
-
-function buildMessage(){
+function buildWhatsAppMessage(){
   const lines = [];
   let total = 0;
   ITEMS.forEach(i => {
@@ -140,76 +141,107 @@ function buildMessage(){
   return greeting + ' ' + lines.join(', ') + ' - ' + totalLabel + ': R' + total.toFixed(2);
 }
 
-function updateWaLinks(){
-  const msg = buildMessage();
+function showWhatsAppOptions() {
+  const items = getOrderItems();
+  if (items.length === 0) {
+    alert(currentLang === 'af' ? 'Voeg items by!' : 'Add items to order!');
+    return;
+  }
+  const msg = buildWhatsAppMessage();
   const encoded = encodeURIComponent(msg);
-  ['wa1','wa2','fabWa'].forEach(id => {
-    const el = document.getElementById(id);
-    if(!el) return;
-    const num = el.getAttribute('data-number');
-    el.href = 'https://wa.me/' + num + '?text=' + encoded;
-  });
+  document.getElementById('wa1').href = 'https://wa.me/27799550825?text=' + encoded;
+  document.getElementById('wa2').href = 'https://wa.me/27835081982?text=' + encoded;
+  document.getElementById('waModal').classList.add('show');
 }
 
-function setActiveTab(catId){
-  document.querySelectorAll('.tab').forEach(t => {
-    t.classList.toggle('active', t.getAttribute('data-cat') === catId);
-  });
+function closeWhatsAppModal() {
+  document.getElementById('waModal').classList.remove('show');
 }
 
-function showCat(catId){
-  const target = document.getElementById('cat-' + catId);
-  if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
-  setActiveTab(catId);
-}
-
-function measureTabsOffset(){
-  const tabsEl = document.getElementById('tabsBar');
-  if(!tabsEl) return;
-  const wasFloating = tabsEl.classList.contains('floating');
-  if(wasFloating){ tabsEl.classList.remove('floating'); document.getElementById('tabsPlaceholder').style.display = 'none'; }
-  const rect = tabsEl.getBoundingClientRect();
-  tabsOriginalTop = rect.top + window.scrollY;
-  if(wasFloating){ tabsEl.classList.add('floating'); document.getElementById('tabsPlaceholder').style.display = 'block'; }
-}
-
-function updateTabsFloat(){
-  if(tabsOriginalTop === null) return;
-  const tabsEl = document.getElementById('tabsBar');
-  const placeholder = document.getElementById('tabsPlaceholder');
-  const shouldFloat = window.scrollY + 10 >= tabsOriginalTop;
-  if(shouldFloat && !tabsEl.classList.contains('floating')){
-    placeholder.style.height = tabsEl.offsetHeight + 'px';
-    placeholder.style.display = 'block';
-    tabsEl.classList.add('floating');
-  } else if(!shouldFloat && tabsEl.classList.contains('floating')){
-    tabsEl.classList.remove('floating');
-    placeholder.style.display = 'none';
+function initializeStripe() {
+  if (!stripe) {
+    stripe = Stripe(STRIPE_KEY);
+    elements = stripe.elements();
+    cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+    cardElement.on('change', (event) => {
+      const displayError = document.getElementById('card-errors');
+      displayError.textContent = event.error ? event.error.message : '';
+    });
   }
 }
 
-function updateActiveTabFromScroll(){
-  const menu = document.getElementById('menu');
-  if(!menu || menu.style.display === 'none') return;
-  const tabsEl = document.getElementById('tabsBar');
-  if(!tabsEl) return;
-  const offset = tabsEl.getBoundingClientRect().bottom + 12;
-  const panels = document.querySelectorAll('.cat-panel');
-  let currentId = panels.length ? panels[0].id : null;
-  panels.forEach(sec => {
-    const rect = sec.getBoundingClientRect();
-    if(rect.top - offset <= 0){ currentId = sec.id; }
-  });
-  if(currentId){ setActiveTab(currentId.replace('cat-', '')); }
+function initiateStripePayment() {
+  const items = getOrderItems();
+  if (items.length === 0) {
+    alert(currentLang === 'af' ? 'Voeg items by!' : 'Add items to order!');
+    return;
+  }
+  initializeStripe();
+  document.getElementById('stripeModal').classList.add('show');
 }
 
-function onScroll(){
-  updateTabsFloat();
-  updateActiveTabFromScroll();
+function closeStripeModal() {
+  document.getElementById('stripeModal').classList.remove('show');
 }
 
-window.addEventListener('scroll', onScroll, {passive:true});
-window.addEventListener('resize', () => { measureTabsOffset(); onScroll(); });
+document.getElementById('paymentForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const total = getOrderTotal();
+  const items = getOrderItems();
+  const email = document.getElementById('customerEmail').value;
+  const phone = document.getElementById('customerPhone').value;
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = currentLang === 'af' ? 'Verwerk...' : 'Processing...';
+
+  try {
+    // Create payment intent
+    const intentRes = await fetch(`${API_URL}/payments/create-payment-intent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items, total, language: currentLang, customerEmail: email, customerPhone: phone })
+    });
+    const intentData = await intentRes.json();
+
+    // Confirm payment with Stripe
+    const result = await stripe.confirmCardPayment(intentData.clientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: { email }
+      }
+    });
+
+    if (result.error) {
+      document.getElementById('card-errors').textContent = result.error.message;
+    } else {
+      // Confirm with backend
+      const confirmRes = await fetch(`${API_URL}/payments/confirm-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          paymentIntentId: intentData.paymentIntentId,
+          items,
+          total,
+          language: currentLang,
+          customerEmail: email,
+          customerPhone: phone
+        })
+      });
+      const confirmData = await confirmRes.json();
+      alert(confirmData.message);
+      closeStripeModal();
+      ITEMS.forEach(i => { qty[i.id] = 0; });
+      renderProducts();
+      updateTotals();
+    }
+  } catch (error) {
+    document.getElementById('card-errors').textContent = 'Payment error: ' + error.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = currentLang === 'af' ? 'Betaal R' + getOrderTotal().toFixed(2) : 'Pay R' + getOrderTotal().toFixed(2);
+  }
+});
 
 function setLang(lang){
   currentLang = lang;
@@ -222,7 +254,7 @@ function setLang(lang){
     el.innerHTML = val;
   });
   document.documentElement.lang = lang;
-  updateWaLinks();
+  renderProducts();
 
   const landing = document.getElementById('landing');
   const menu = document.getElementById('menu');
@@ -232,11 +264,7 @@ function setLang(lang){
     menu.style.display = 'block';
     void menu.offsetWidth;
     menu.classList.add('visible');
-    setActiveTab('pickles');
-    measureTabsOffset();
-    onScroll();
     document.querySelector('.total-bar').classList.add('visible');
-    document.getElementById('fabWa').classList.add('visible');
   }, 250);
 }
 
@@ -245,7 +273,6 @@ function showLanding(){
   const menu = document.getElementById('menu');
   menu.classList.remove('visible');
   document.querySelector('.total-bar').classList.remove('visible');
-  document.getElementById('fabWa').classList.remove('visible');
   setTimeout(() => {
     menu.style.display = 'none';
     landing.style.display = 'block';
@@ -258,5 +285,5 @@ function showLanding(){
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', async () => {
   await loadProducts();
-  updateWaLinks();
+  updateTotals();
 });

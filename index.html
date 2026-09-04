@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Smul Spens - Homemade & Handcrafted Confectionery & Preserves. Order online via WhatsApp.">
+<meta name="description" content="Smul Spens - Homemade & Handcrafted Confectionery & Preserves. Order online via WhatsApp or Stripe.">
 <meta name="theme-color" content="#7C8A3E">
 <meta property="og:title" content="Smul Spens — Price List">
 <meta property="og:description" content="Homemade & Handcrafted Confectionery & Preserves">
@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -56,218 +57,17 @@
     <button class="tab" data-cat="sweets" onclick="showCat('sweets')"><span class="tab-icon">🍬</span><span data-en="Sweets" data-af="Lekkers">Sweets</span></button>
   </div>
 
-  <div class="panel-wrap">
-
-    <div class="cat-panel" id="cat-pickles">
-      <div class="cat-section-head">
-        <div class="cat-section-icon">🫙</div>
-        <h2 data-en="Pickled Products &amp; Spreads" data-af="Ingelegde Produkte &amp; Smere">Pickled Products &amp; Spreads</h2>
-      </div>
-      <div class="item-grid">
-
-        <div class="item-card">
-          <div class="item-name" data-en="Pickled Beetroot" data-af="Ingelegde Beet">Pickled Beetroot</div>
-          <div class="item-price">R30</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('beetroot',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="beetroot" oninput="qtyChanged('beetroot',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('beetroot',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Curried Beans" data-af="Kerrie Boontjies">Curried Beans</div>
-          <div class="item-price">R40</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('curriedbeans',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="curriedbeans" oninput="qtyChanged('curriedbeans',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('curriedbeans',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Curried Cabbage" data-af="Kerrie Kool">Curried Cabbage</div>
-          <div class="item-price">R30</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('curriedcabbage',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="curriedcabbage" oninput="qtyChanged('curriedcabbage',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('curriedcabbage',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Pickled Onions" data-af="Ingelegde Uie">Pickled Onions</div>
-          <div class="item-price">R60</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('onions',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="onions" oninput="qtyChanged('onions',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('onions',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Homemade Mustard" data-af="Tuisgemaakte Mosterd">Homemade Mustard</div>
-          <div class="item-price">R60</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('mustard',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="mustard" oninput="qtyChanged('mustard',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('mustard',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Tomato Jam" data-af="Tamatiekonfyt">Tomato Jam</div>
-          <div class="item-price">R50</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('tomatojam',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="tomatojam" oninput="qtyChanged('tomatojam',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('tomatojam',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="cat-panel" id="cat-rusks">
-      <div class="cat-section-head">
-        <div class="cat-section-icon">🍞</div>
-        <h2 data-en="Rusks" data-af="Beskuit">Rusks</h2>
-      </div>
-      <div class="item-grid">
-
-        <div class="item-card">
-          <div class="item-name" data-en="All Bran Rusks" data-af="All Bran Beskuit">All Bran Rusks</div>
-          <div class="item-price">R55</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('allbran',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="allbran" oninput="qtyChanged('allbran',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('allbran',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Bran Rusks with Seeds" data-af="Semelbeskuit met Sade">Bran Rusks with Seeds</div>
-          <div class="item-price">R55</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('branseeds',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="branseeds" oninput="qtyChanged('branseeds',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('branseeds',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Buttermilk Rusks" data-af="Karringmelkbeskuit">Buttermilk Rusks</div>
-          <div class="item-price">R55</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('buttermilk',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="buttermilk" oninput="qtyChanged('buttermilk',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('buttermilk',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Diabetic Rusks" data-af="Diabetiese Beskuit">Diabetic Rusks</div>
-          <div class="item-price">R55</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('diabetic',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="diabetic" oninput="qtyChanged('diabetic',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('diabetic',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="cat-panel" id="cat-baked">
-      <div class="cat-section-head">
-        <div class="cat-section-icon">🍪</div>
-        <h2 data-en="Baked Goods &amp; Biscuits" data-af="Gebak &amp; Koekies">Baked Goods &amp; Biscuits</h2>
-      </div>
-      <div class="item-grid">
-
-        <div class="item-card">
-          <div class="item-name" data-en="Ginger Biscuits" data-af="Gemmerkoekies">Ginger Biscuits</div>
-          <div class="item-price">R35</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('ginger',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="ginger" oninput="qtyChanged('ginger',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('ginger',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Sweet Biscuits" data-af="Soet Koekies">Sweet Biscuits</div>
-          <div class="item-price">R35</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('sweetbiscuits',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="sweetbiscuits" oninput="qtyChanged('sweetbiscuits',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('sweetbiscuits',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Cupcakes" data-af="Kolwyntjies">Cupcakes</div>
-          <div class="item-price">R10</div>
-          <div class="unit-note" data-en="per cupcake" data-af="per kolwyntjie">per cupcake</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('cupcakes',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="cupcakes" oninput="qtyChanged('cupcakes',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('cupcakes',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="cat-panel" id="cat-sweets">
-      <div class="cat-section-head">
-        <div class="cat-section-icon">🍬</div>
-        <h2 data-en="Sweet Treats" data-af="Soet Lekkernye">Sweet Treats</h2>
-      </div>
-      <div class="item-grid">
-
-        <div class="item-card">
-          <div class="item-name" data-en="Biscuit Fudge" data-af="Koekie Fudge">Biscuit Fudge</div>
-          <div class="item-price">R20</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('fudge',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="fudge" oninput="qtyChanged('fudge',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('fudge',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Coconut Ice" data-af="Klapper-ys">Coconut Ice</div>
-          <div class="item-price">R20</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('coconutice',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="coconutice" oninput="qtyChanged('coconutice',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('coconutice',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-        <div class="item-card">
-          <div class="item-name" data-en="Lamingtons" data-af="Ystervarkies">Lamingtons</div>
-          <div class="item-price">R20</div>
-          <div class="qty-row">
-            <button class="qty-btn" onclick="stepQty('lamingtons',-1)" aria-label="Decrease quantity">−</button>
-            <input class="qty-input" type="number" min="0" value="0" data-item="lamingtons" oninput="qtyChanged('lamingtons',this.value)" aria-label="Quantity">
-            <button class="qty-btn" onclick="stepQty('lamingtons',1)" aria-label="Increase quantity">+</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
+  <div class="panel-wrap" id="productsPanel">
+    <!-- Products will be dynamically loaded here -->
   </div>
 
   <div class="footer">
     <p class="cta" data-en="Waiting for you!" data-af="Ons wag vir jou!">Waiting for you!</p>
     <span class="cash-card" data-en="💳 CASH &amp; CARD ACCEPTED" data-af="💳 KONTANT &amp; KAART AANVAAR">💳 CASH &amp; CARD ACCEPTED</span>
-    <p class="note" data-en="Order on WhatsApp" data-af="Bestel op WhatsApp">Order on WhatsApp</p>
+    <p class="note" data-en="Choose your payment method" data-af="Kies jou betalingsmetode">Choose your payment method</p>
     <div class="wa-row">
-      <a id="wa1" class="wa-btn" href="#" data-number="27799550825"><span class="dot"></span> Ronel — 079 955 0825</a>
-      <a id="wa2" class="wa-btn" href="#" data-number="27835081982"><span class="dot"></span> Dalene — 083 508 1982</a>
+      <button class="wa-btn" onclick="initiateStripePayment()" style="background:var(--gold); color:var(--warm-brown);"><span>💳</span> <span data-en="Pay with Card" data-af="Betaal met Kaart">Pay with Card</span></button>
+      <button class="wa-btn" onclick="showWhatsAppOptions()"><span>💬</span> <span data-en="Order via WhatsApp" data-af="Bestel via WhatsApp">Order via WhatsApp</span></button>
     </div>
     <p class="fine" data-en="Prices subject to change without notice" data-af="Pryse onderhewig aan verandering sonder kennisgewing">Prices subject to change without notice</p>
   </div>
@@ -283,11 +83,38 @@
   </div>
 </div>
 
-<a id="fabWa" class="fab-wa" href="#" data-number="27799550825" aria-label="Order on WhatsApp">
-  <svg viewBox="0 0 32 32" fill="#fff" xmlns="http://www.w3.org/2000/svg">
-    <path d="M16.004 3C9.376 3 4 8.373 4 15c0 2.386.7 4.61 1.905 6.475L4 29l7.72-1.868A11.94 11.94 0 0 0 16.004 27C22.63 27 28 21.627 28 15S22.63 3 16.004 3zm0 21.818c-1.94 0-3.75-.55-5.29-1.502l-.84.463-2.92.706.719-2.633-.54-.86c-.97-1.543-1.528-3.336-1.528-5.192 0-5.594 4.544-10.138 10.138-10.138 5.594 0 10.137 4.544 10.137 10.138-1e-3 5.593-4.544 10.137-10.137 10.137zm5.533-7.568c-.304-.152-1.8-.89-2.08-.99-.28-.1-.485-.152-.688.152-.203.304-.787.99-.964 1.193-.176.203-.353.228-.657.076-.304-.152-1.285-.474-2.45-1.512-.906-.806-1.517-1.802-1.693-2.106-.177-.304-.018-.468.132-.619.136-.135.304-.353.456-.53.152-.177.203-.304.304-.506.1-.203.05-.38-.025-.53-.075-.15-.688-1.656-.943-2.267-.248-.595-.5-.515-.688-.524-.177-.008-.38-.01-.584-.01-.203 0-.533.076-.812.38-.28.304-1.066 1.04-1.066 2.544s1.093 2.954 1.245 3.157c.152.203 2.148 3.284 5.207 4.606 2.728 1.095 3.806.876 4.493.822.688-.053 2.217-.906 2.528-1.78.31-.876.31-1.627.217-1.78-.094-.153-.298-.23-.602-.38z"/>
-  </svg>
-</a>
+<!-- WhatsApp Modal -->
+<div id="waModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeWhatsAppModal()">&times;</span>
+    <h2 data-en="Order via WhatsApp" data-af="Bestel via WhatsApp">Order via WhatsApp</h2>
+    <div class="wa-contacts">
+      <a class="wa-link" href="#" id="wa1" target="_blank"><span class="dot"></span> Ronel — 079 955 0825</a>
+      <a class="wa-link" href="#" id="wa2" target="_blank"><span class="dot"></span> Dalene — 083 508 1982</a>
+    </div>
+  </div>
+</div>
+
+<!-- Stripe Payment Modal -->
+<div id="stripeModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeStripeModal()">&times;</span>
+    <h2 data-en="Secure Payment" data-af="Veilige Betaling">Secure Payment</h2>
+    <form id="paymentForm">
+      <div class="form-group">
+        <label data-en="Email" data-af="E-pos">Email</label>
+        <input type="email" id="customerEmail" placeholder="customer@example.com" required>
+      </div>
+      <div class="form-group">
+        <label data-en="Phone (optional)" data-af="Foon (opsioneel)">Phone (optional)</label>
+        <input type="tel" id="customerPhone" placeholder="+27799550825">
+      </div>
+      <div id="card-element" class="card-element"></div>
+      <div id="card-errors" class="card-errors"></div>
+      <button type="submit" class="payment-btn" data-en="Pay R" data-af="Betaal R">Pay</button>
+    </form>
+  </div>
+</div>
 
 <script src="js/app.js"></script>
 </body>
