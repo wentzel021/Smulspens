@@ -14,6 +14,10 @@
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
+  a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
+    outline:3px solid var(--terracotta-dark);
+    outline-offset:2px;
+  }
   body{
     background:
       repeating-linear-gradient(90deg, rgba(124,138,62,0.08) 0 44px, rgba(0,0,0,0) 44px 88px),
@@ -76,7 +80,7 @@
 
   .title-strip{ text-align:center; margin-top:18px; padding:0 20px; }
   .title-strip h1{ font-family:'Fraunces', serif; font-weight:600; font-size:30px; letter-spacing:0.5px; margin:0; color:var(--warm-brown); }
-  .title-strip p{ font-size:13px; color:#8a7364; margin:6px 0 0; font-style:italic; }
+  .title-strip p{ font-size:13px; color:#5F4A3B; margin:6px 0 0; font-style:italic; }
 
   /* TABS (floating scrollspy nav) */
   #tabsPlaceholder{ display:none; }
@@ -141,16 +145,16 @@
   .item-grid{
     display:flex;
     flex-wrap:wrap;
-    gap:12px;
+    gap:10px;
     margin-top:10px;
   }
   .item-card{
-    flex:1 1 calc(50% - 6px);
-    max-width:calc(50% - 6px);
+    flex:1 1 calc(50% - 5px);
+    max-width:calc(50% - 5px);
     background:var(--paper);
     border:1px solid var(--line);
     border-radius:16px;
-    padding:12px 12px 10px;
+    padding:10px 10px 10px;
     display:flex;
     flex-direction:column;
     gap:8px;
@@ -161,22 +165,22 @@
   .item-price{ font-family:'Fraunces', serif; font-weight:700; font-size:17.5px; color:var(--terracotta-dark); }
   .qty-row{
     display:flex; align-items:center; justify-content:space-between;
-    background:var(--cream); border-radius:10px; padding:4px; margin-top:auto;
+    background:var(--cream); border-radius:10px; padding:3px; margin-top:auto;
   }
   .qty-btn{
-    width:26px; height:26px; border:none; border-radius:8px; background:var(--warm-brown); color:#fff;
-    font-size:16px; font-weight:700; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    width:38px; height:38px; flex:none; border:none; border-radius:9px; background:var(--warm-brown); color:#fff;
+    font-size:18px; font-weight:700; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
     transition:background .15s ease, transform .1s ease;
   }
   .qty-btn:hover{ background:var(--terracotta); }
   .qty-btn:active{ transform:scale(0.92); }
   .qty-input{
-    width:36px; text-align:center; border:none; background:transparent; font-family:'Fraunces', serif;
+    width:30px; text-align:center; border:none; background:transparent; font-family:'Fraunces', serif;
     font-weight:700; font-size:15px; color:var(--warm-brown);
     -moz-appearance:textfield;
   }
   .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
-  .unit-note{ font-size:10px; color:#8a7364; font-style:italic; margin-top:-4px; }
+  .unit-note{ font-size:10px; color:#5F4A3B; font-style:italic; margin-top:-4px; }
 
   /* FOOTER */
   .footer{
@@ -211,8 +215,8 @@
   }
   .landing-icon{ font-size:44px; margin-bottom:6px; }
   .landing-brand{ font-family:'Caveat', cursive; font-size:clamp(44px, 13vw, 70px); color:var(--olive-dark); margin:0; line-height:1; }
-  .landing-sub{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:2px; text-transform:uppercase; font-size:12px; color:#8a7364; margin:6px 0 34px; }
-  .landing-prompt{ font-size:13px; color:#8a7364; font-style:italic; margin-bottom:18px; }
+  .landing-sub{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:2px; text-transform:uppercase; font-size:12px; color:#5F4A3B; margin:6px 0 34px; }
+  .landing-prompt{ font-size:13px; color:#5F4A3B; font-style:italic; margin-bottom:18px; }
   .landing-buttons{ display:flex; flex-direction:column; gap:14px; max-width:280px; margin:0 auto; }
   .lang-btn{
     font-family:'Fraunces', serif; font-weight:600; font-size:17px; letter-spacing:.3px; padding:15px 20px;
@@ -268,5 +272,5 @@
 
   /* LOADING STATE */
   .loading-note{
-    text-align:center; padding:30px 20px; color:#8a7364; font-style:italic; font-size:13px;
+    text-align:center; padding:30px 20px; color:#5F4A3B; font-style:italic; font-size:13px;
   }

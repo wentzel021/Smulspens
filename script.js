@@ -38,11 +38,14 @@ function renderTabs(){
   CATEGORIES.forEach(function(cat, index){
     var btn = document.createElement('button');
     btn.className = 'tab' + (index === 0 ? ' active' : '');
+    btn.type = 'button';
     btn.setAttribute('data-cat', cat.id);
+    if(index === 0){ btn.setAttribute('aria-current', 'true'); }
     btn.onclick = function(){ showCat(cat.id); };
 
     var icon = document.createElement('span');
     icon.className = 'tab-icon';
+    icon.setAttribute('aria-hidden', 'true');
     icon.textContent = cat.icon;
     btn.appendChild(icon);
 
@@ -68,7 +71,7 @@ function renderPanels(){
     var head = document.createElement('div');
     head.className = 'cat-section-head';
     head.innerHTML =
-      '<div class="cat-section-icon">' + cat.icon + '</div>' +
+      '<div class="cat-section-icon" aria-hidden="true">' + cat.icon + '</div>' +
       '<h2 data-en="' + escapeAttr(cat.en) + '" data-af="' + escapeAttr(cat.af) + '">' + escapeHtml(cat.en) + '</h2>';
     panel.appendChild(head);
 
@@ -116,6 +119,9 @@ function buildItemCard(item){
   minusBtn.className = 'qty-btn';
   minusBtn.type = 'button';
   minusBtn.textContent = '−';
+  minusBtn.setAttribute('data-qty-role', 'minus');
+  minusBtn.setAttribute('data-item-id', item.id);
+  minusBtn.setAttribute('aria-label', qtyLabel('minus', item));
   minusBtn.onclick = function(){ stepQty(item.id, -1); };
   qtyRow.appendChild(minusBtn);
 
@@ -125,6 +131,7 @@ function buildItemCard(item){
   input.min = '0';
   input.value = '0';
   input.setAttribute('data-item', item.id);
+  input.setAttribute('aria-label', qtyLabel('input', item));
   input.oninput = function(){ qtyChanged(item.id, input.value); };
   qtyRow.appendChild(input);
 
@@ -132,11 +139,36 @@ function buildItemCard(item){
   plusBtn.className = 'qty-btn';
   plusBtn.type = 'button';
   plusBtn.textContent = '+';
+  plusBtn.setAttribute('data-qty-role', 'plus');
+  plusBtn.setAttribute('data-item-id', item.id);
+  plusBtn.setAttribute('aria-label', qtyLabel('plus', item));
   plusBtn.onclick = function(){ stepQty(item.id, 1); };
   qtyRow.appendChild(plusBtn);
 
   card.appendChild(qtyRow);
   return card;
+}
+
+function qtyLabel(role, item){
+  var name = currentLang === 'af' ? item.af : item.en;
+  if(role === 'minus'){
+    return currentLang === 'af' ? 'Verminder hoeveelheid van ' + name : 'Decrease quantity of ' + name;
+  }
+  if(role === 'plus'){
+    return currentLang === 'af' ? 'Verhoog hoeveelheid van ' + name : 'Increase quantity of ' + name;
+  }
+  return currentLang === 'af' ? 'Hoeveelheid van ' + name : 'Quantity of ' + name;
+}
+
+function updateQtyAriaLabels(){
+  ITEMS.forEach(function(item){
+    var minus = document.querySelector('.qty-btn[data-qty-role="minus"][data-item-id="' + item.id + '"]');
+    var plus = document.querySelector('.qty-btn[data-qty-role="plus"][data-item-id="' + item.id + '"]');
+    var input = document.querySelector('.qty-input[data-item="' + item.id + '"]');
+    if(minus) minus.setAttribute('aria-label', qtyLabel('minus', item));
+    if(plus) plus.setAttribute('aria-label', qtyLabel('plus', item));
+    if(input) input.setAttribute('aria-label', qtyLabel('input', item));
+  });
 }
 
 function escapeHtml(str){
@@ -195,12 +227,21 @@ function buildMessage(){
 }
 
 function updateWaLinks(){
-  var msg = buildMessage();
+  var msg;
+  try{
+    msg = buildMessage();
+  } catch(err){
+    console.error('buildMessage failed, falling back to a plain greeting:', err);
+    msg = currentLang === 'af'
+      ? "Hallo! Ek wil graag 'n bestelling plaas."
+      : "Hi! I'd like to place an order from your price list.";
+  }
   var encoded = encodeURIComponent(msg);
   ['wa1', 'wa2', 'fabWa'].forEach(function(id){
     var el = document.getElementById(id);
     if(!el) return;
     var num = el.getAttribute('data-number');
+    if(!num){ console.error('WhatsApp button #' + id + ' is missing a data-number attribute.'); return; }
     el.href = 'https://wa.me/' + num + '?text=' + encoded;
   });
 }
@@ -209,14 +250,20 @@ function updateWaLinks(){
 
 function setActiveTab(catId){
   document.querySelectorAll('.tab').forEach(function(t){
-    t.classList.toggle('active', t.getAttribute('data-cat') === catId);
+    var isActive = t.getAttribute('data-cat') === catId;
+    t.classList.toggle('active', isActive);
+    if(isActive){ t.setAttribute('aria-current', 'true'); } else { t.removeAttribute('aria-current'); }
   });
 }
 
 function showCat(catId){
-  var target = document.getElementById('cat-' + catId);
-  if(target){ target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  setActiveTab(catId);
+  try{
+    var target = document.getElementById('cat-' + catId);
+    if(target){ target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    setActiveTab(catId);
+  } catch(err){
+    console.error('showCat failed:', err);
+  }
 }
 
 function measureTabsOffset(){
@@ -286,6 +333,7 @@ function setLang(lang){
     el.innerHTML = val;
   });
   document.documentElement.lang = lang;
+  updateQtyAriaLabels();
   updateWaLinks();
 
   var landing = document.getElementById('landing');
@@ -301,6 +349,8 @@ function setLang(lang){
     onScroll();
     document.querySelector('.total-bar').classList.add('visible');
     document.getElementById('fabWa').classList.add('visible');
+    var heading = document.getElementById('priceListHeading');
+    if(heading){ heading.focus(); }
   }, 250);
 }
 
@@ -316,6 +366,8 @@ function showLanding(){
     landing.style.opacity = '0';
     void landing.offsetWidth;
     landing.style.opacity = '1';
+    var firstLangBtn = document.querySelector('.lang-btn.primary');
+    if(firstLangBtn){ firstLangBtn.focus(); }
   }, 300);
 }
 

@@ -4,33 +4,50 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smul Spens — Price List</title>
+<meta name="description" content="Smul Spens — homemade pickles, preserves, rusks, baked goods and sweet treats, made in small batches. Browse the price list and order directly on WhatsApp.">
+<meta property="og:title" content="Smul Spens — Price List">
+<meta property="og:description" content="Homemade pickles, preserves, rusks, baked goods and sweet treats. Browse the price list and order directly on WhatsApp.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Nunito+Sans:wght@400;600;700;800&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Smul Spens",
+  "description": "Homemade confectionery and preserves — pickles, rusks, baked goods and sweet treats, made in small batches.",
+  "telephone": ["+27799550825", "+27835081982"],
+  "priceRange": "R10–R60",
+  "currenciesAccepted": "ZAR"
+}
+</script>
 </head>
 <body>
 
 <div class="sheet">
 
   <div id="landing" class="landing">
-    <div class="landing-icon">🫙</div>
+    <div class="landing-icon" aria-hidden="true">🫙</div>
     <h1 class="landing-brand">Smul Spens</h1>
     <div class="landing-sub">Confectionery &amp; Preserves</div>
     <p class="landing-prompt">Choose your language&nbsp;/&nbsp;Kies jou taal</p>
     <div class="landing-buttons">
-      <button class="lang-btn primary" onclick="setLang('en')"><span>English</span><span class="flag">🇬🇧</span></button>
-      <button class="lang-btn" onclick="setLang('af')"><span>Afrikaans</span><span class="flag">🇿🇦</span></button>
+      <button class="lang-btn primary" onclick="setLang('en')"><span>English</span><span class="flag" aria-hidden="true">🇬🇧</span></button>
+      <button class="lang-btn" onclick="setLang('af')"><span>Afrikaans</span><span class="flag" aria-hidden="true">🇿🇦</span></button>
     </div>
   </div>
 
   <div id="menu">
-  <button class="lang-toggle" onclick="showLanding()">⟵ EN / AF</button>
+  <button class="lang-toggle" onclick="showLanding()" aria-label="Change language">⟵ EN / AF</button>
 
   <div class="header">
     <div class="header-top">
       <div class="header-text">
         <div class="eyebrow" data-en="Homemade &amp; Handcrafted" data-af="Huisgemaak met Liefde">Homemade &amp; Handcrafted</div>
-        <h1 class="brand">Smul Spens</h1>
+        <div class="brand">Smul Spens</div>
         <div class="brand-sub" data-en="Confectionery &amp; Preserves" data-af="Lekkernye &amp; Inmaakprodukte">Confectionery &amp; Preserves</div>
       </div>
       <div class="stamp"><span data-en-html="FROM OUR<br>PANTRY<br>TO YOURS" data-af-html="VANAF ONS<br>SPENS NA<br>JOUNE">FROM OUR<br>PANTRY<br>TO YOURS</span></div>
@@ -38,26 +55,26 @@
   </div>
 
   <div class="title-strip">
-    <h1 data-en="The Price List" data-af="Die Pryslys">The Price List</h1>
+    <h1 id="priceListHeading" tabindex="-1" data-en="The Price List" data-af="Die Pryslys">The Price List</h1>
     <p data-en="Small batches, honest ingredients, made with love." data-af="Klein bondels, eerlike bestanddele, met liefde gemaak.">Small batches, honest ingredients, made with love.</p>
   </div>
 
   <div id="tabsPlaceholder"></div>
-  <div class="tabs" id="tabsBar">
+  <nav class="tabs" id="tabsBar" aria-label="Menu categories">
     <!-- Category tab buttons are generated from products.json by script.js -->
-  </div>
+  </nav>
 
-  <div class="panel-wrap" id="panelWrap">
+  <main class="panel-wrap" id="panelWrap">
     <p class="loading-note">Loading menu…</p>
-  </div>
+  </main>
 
   <div class="footer">
     <p class="cta" data-en="Waiting for you!" data-af="Ons wag vir jou!">Waiting for you!</p>
     <span class="cash-card" data-en="💳 CASH &amp; CARD ACCEPTED" data-af="💳 KONTANT &amp; KAART AANVAAR">💳 CASH &amp; CARD ACCEPTED</span>
     <p class="note" data-en="Order on WhatsApp" data-af="Bestel op WhatsApp">Order on WhatsApp</p>
     <div class="wa-row">
-      <a id="wa1" class="wa-btn" href="#" data-number="27799550825"><span class="dot"></span> Ronel — 079 955 0825</a>
-      <a id="wa2" class="wa-btn" href="#" data-number="27835081982"><span class="dot"></span> Dalene — 083 508 1982</a>
+      <a id="wa1" class="wa-btn" href="#" data-number="27799550825" aria-label="Order via WhatsApp with Ronel, 079 955 0825"><span class="dot" aria-hidden="true"></span> Ronel — 079 955 0825</a>
+      <a id="wa2" class="wa-btn" href="#" data-number="27835081982" aria-label="Order via WhatsApp with Dalene, 083 508 1982"><span class="dot" aria-hidden="true"></span> Dalene — 083 508 1982</a>
     </div>
     <p class="fine" data-en="Prices subject to change without notice" data-af="Pryse onderhewig aan verandering sonder kennisgewing">Prices subject to change without notice</p>
   </div>
